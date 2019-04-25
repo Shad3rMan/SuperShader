@@ -144,7 +144,8 @@ float4 LitPassFragment (VertexOutput input) : SV_TARGET
 
     fixed3 normal = input.normal;
 #if defined(_NORMALMAP)
-    normal = UnpackScaleNormal(tex2D(_NormalMap, input.uv0), _BumpScale).xzy;
+    normal = UnpackScaleNormal(tex2D(_NormalMap, input.uv0), _BumpScale);
+    normal = normal.xzy;
     normal = normalize(normal);
 #endif
     float3 diffuseLight = DiffuseLight(normal, input.worldPos);
