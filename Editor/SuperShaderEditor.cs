@@ -99,14 +99,6 @@ namespace MobilePipeline.Shaders.Editor
             if (EditorGUI.EndChangeCheck())
             {
                 SetKeywordEnabled("_LIT", lit.floatValue > 0);
-                if (lit.floatValue < 0.001f)
-                {
-                    SetKeywordEnabled("_LAMBERT", false);
-                    SetKeywordEnabled("_HALF_LAMBERT", false);
-                    SetKeywordEnabled("_BLINN_PHONG", false);
-                    SetKeywordEnabled("_AMBIENT", false);
-                    SetKeywordEnabled("_EMISSION", false);
-                }
             }
 
             GUILayout.EndVertical();
@@ -117,6 +109,8 @@ namespace MobilePipeline.Shaders.Editor
             EditorGUI.BeginChangeCheck();
             var hasAmbient = FindProperty("_HasAmbientTex", _properties);
             var prop = FindProperty("_AmbientTex", _properties);
+            var hasEnv = FindProperty("_HasEnv", _properties);
+
             EditorGUILayout.Space();
             hasAmbient.floatValue =
                 EditorGUILayout.Toggle(prop.displayName + " enabled", hasAmbient.floatValue > 0) ? 1 : 0;
@@ -127,9 +121,14 @@ namespace MobilePipeline.Shaders.Editor
                 GUILayout.EndVertical();
             }
 
+            EditorGUILayout.Space();
+            hasEnv.floatValue =
+                EditorGUILayout.Toggle(hasEnv.displayName + " enabled", hasEnv.floatValue > 0) ? 1 : 0;
+
             if (EditorGUI.EndChangeCheck())
             {
                 SetKeywordEnabled("_AMBIENT", hasAmbient.floatValue > 0);
+                SetKeywordEnabled("_ENVIRONMENT", hasEnv.floatValue > 0);
             }
         }
 
@@ -178,7 +177,7 @@ namespace MobilePipeline.Shaders.Editor
                 SetKeywordEnabled("_EMISSION", hasEmission.floatValue > 0);
             }
         }
-        
+
         private void DrawPlanarBlock()
         {
             EditorGUI.BeginChangeCheck();
@@ -208,6 +207,7 @@ namespace MobilePipeline.Shaders.Editor
                 SetKeywordEnabled("_PLANAR_Y", maskVector.y > 0);
                 SetKeywordEnabled("_PLANAR_Z", maskVector.z > 0);
             }
+
             GUILayout.EndVertical();
         }
 

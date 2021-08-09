@@ -6,6 +6,7 @@
         [HideInInspector] _HasLighting ("Lighting", Float) = 1
         [HideInInspector] _HasAmbientTex ("Ambient occlusion", Float) = 1
         [HideInInspector] _AmbientTex("Ambient Occlusion", 2D) = "white" {}
+        [HideInInspector] _HasEnv("Environment", Float) = 1
         [HideInInspector] _HasEmissionTex ("Emission", Float) = 1
         [HideInInspector] _EmissionTex("Emission", 2D) = "black" {}
         [HideInInspector] _HasNormalMap ("Normal Map", Float) = 1
@@ -48,11 +49,13 @@
 
             HLSLPROGRAM
 
+            #pragma multi_compile_fwdbase
             #pragma multi_compile_instancing
             #pragma instancing_options assumeuniformscaling
             #pragma shader_feature _ _LIT
             #pragma shader_feature _MAIN_TEX
             #pragma shader_feature _AMBIENT
+            #pragma shader_feature _ENVIRONMENT
             #pragma shader_feature _EMISSION
             #pragma shader_feature _NORMALMAP
             #pragma shader_feature _PLANAR
@@ -67,6 +70,8 @@
 
             ENDHLSL
         }
+    
+        UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
     }
 
     CustomEditor "MobilePipeline.Shaders.Editor.SuperShaderEditor"
